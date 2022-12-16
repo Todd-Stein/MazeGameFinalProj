@@ -14,8 +14,8 @@
             filePath = "MazeGameFinalProj/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "357"
+            endingLineNumber = "357"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "MazeGameFinalProj/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "generateMaze()"
             landmarkType = "7">
          </BreakpointContent>

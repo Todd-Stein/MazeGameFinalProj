@@ -19,44 +19,6 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="28H-vD-Bed">
                                 <rect key="frame" x="85" y="43" width="747" height="307"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEf-eS-qNl">
-                                        <rect key="frame" x="31" y="191" width="52" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="arrow.up" catalog="system"/>
-                                        <connections>
-                                            <action selector="upPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hzs-8N-cOE"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wFp-dz-eW2">
-                                        <rect key="frame" x="8" y="207" width="52" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="arrow.left" catalog="system"/>
-                                        <connections>
-                                            <action selector="leftPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yfZ-1L-8vi"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yqn-yf-gRE">
-                                        <rect key="frame" x="31" y="225" width="52" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="arrow.down" catalog="system"/>
-                                        <connections>
-                                            <action selector="downPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dm4-06-n2x"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KBE-aC-Mmb">
-                                        <rect key="frame" x="52" y="207" width="52" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="arrow.right" catalog="system"/>
-                                        <connections>
-                                            <action selector="rightPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="h0v-fy-2tb"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q6X-1e-rwJ">
@@ -85,18 +47,38 @@
                     </view>
                     <connections>
                         <outlet property="displayBounds" destination="28H-vD-Bed" id="Zlp-Lc-3AS"/>
+                        <outlet property="outerBoundsBottom" destination="8Xb-pp-OOP" id="As3-JE-Mq1"/>
+                        <outlet property="outerBoundsLeft" destination="rD5-YC-vYy" id="kQl-5f-lnv"/>
+                        <outlet property="outerBoundsRight" destination="hAQ-LV-sHg" id="LfH-4G-yHa"/>
+                        <outlet property="outerBoundsTop" destination="Q6X-1e-rwJ" id="Kf4-A6-bBO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="down" id="LPo-eA-reC">
+                    <connections>
+                        <action selector="swipeDown:" destination="BYZ-38-t0r" id="Bpc-AN-pPS"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="5ay-Kt-s57">
+                    <connections>
+                        <action selector="swipeLeft:" destination="BYZ-38-t0r" id="Ass-8A-OzQ"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="Mx9-nT-F8Q">
+                    <connections>
+                        <action selector="swipeRight:" destination="BYZ-38-t0r" id="sSd-en-QfV"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="up" id="z7p-Zd-ZTo">
+                    <connections>
+                        <action selector="swipeUp:" destination="BYZ-38-t0r" id="mti-pS-1FL"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="26.760563380281692" y="-28.244274809160306"/>
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.down" catalog="system" width="118" height="128"/>
-        <image name="arrow.left" catalog="system" width="128" height="95"/>
-        <image name="arrow.right" catalog="system" width="128" height="95"/>
-        <image name="arrow.up" catalog="system" width="118" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
