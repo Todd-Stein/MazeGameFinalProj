@@ -16,6 +16,8 @@
 		AC3EE2DA2948FD6E00B3C9DD /* MazeGameFinalProjTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3EE2D92948FD6E00B3C9DD /* MazeGameFinalProjTests.swift */; };
 		AC3EE2E42948FD6E00B3C9DD /* MazeGameFinalProjUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3EE2E32948FD6E00B3C9DD /* MazeGameFinalProjUITests.swift */; };
 		AC3EE2E62948FD6E00B3C9DD /* MazeGameFinalProjUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3EE2E52948FD6E00B3C9DD /* MazeGameFinalProjUITestsLaunchTests.swift */; };
+		AC54149B294CE4B0003DB506 /* pauseMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC54149A294CE4B0003DB506 /* pauseMenu.swift */; };
+		AC54149D294D1479003DB506 /* highScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC54149C294D1479003DB506 /* highScoreView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		AC3EE2DF2948FD6E00B3C9DD /* MazeGameFinalProjUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MazeGameFinalProjUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC3EE2E32948FD6E00B3C9DD /* MazeGameFinalProjUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MazeGameFinalProjUITests.swift; sourceTree = "<group>"; };
 		AC3EE2E52948FD6E00B3C9DD /* MazeGameFinalProjUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MazeGameFinalProjUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AC54149A294CE4B0003DB506 /* pauseMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pauseMenu.swift; sourceTree = "<group>"; };
+		AC54149C294D1479003DB506 /* highScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = highScoreView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,8 @@
 				AC3EE2CB2948FD6D00B3C9DD /* Assets.xcassets */,
 				AC3EE2CD2948FD6D00B3C9DD /* LaunchScreen.storyboard */,
 				AC3EE2D02948FD6D00B3C9DD /* Info.plist */,
+				AC54149A294CE4B0003DB506 /* pauseMenu.swift */,
+				AC54149C294D1479003DB506 /* highScoreView.swift */,
 			);
 			path = MazeGameFinalProj;
 			sourceTree = "<group>";
@@ -258,7 +264,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC54149D294D1479003DB506 /* highScoreView.swift in Sources */,
 				AC3EE2C72948FD6C00B3C9DD /* ViewController.swift in Sources */,
+				AC54149B294CE4B0003DB506 /* pauseMenu.swift in Sources */,
 				AC3EE2C32948FD6C00B3C9DD /* AppDelegate.swift in Sources */,
 				AC3EE2C52948FD6C00B3C9DD /* SceneDelegate.swift in Sources */,
 			);

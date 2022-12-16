@@ -40,50 +40,207 @@ enum direction {
 }
 class ViewController: UIViewController {
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let pauseVC = segue.destination as? pauseMenu
+        pauseVC?.mainVC = self
+    }
     
+    @IBAction func unwindToPrevious(unwindSegue: UIStoryboardSegue) {
+        
+    }
+    @IBOutlet weak var settingsButtonRef: UIButton!
+    
+    var restartButton:UIButton?
+    var quitButton:UIButton?
+    
+    var startGame:Bool = false
+    
+    @IBOutlet var swipeRightRef: UISwipeGestureRecognizer!
+    @IBOutlet var swipeLeftRef: UISwipeGestureRecognizer!
+    
+    @IBOutlet var swipeDownRef: UISwipeGestureRecognizer!
+    @IBOutlet var swipeUpRef: UISwipeGestureRecognizer!
+    @IBOutlet weak var upButtonRef: UIButton!
+    
+    @IBOutlet weak var leftButtonRef: UIButton!
+    @IBOutlet weak var downButtonRef: UIButton!
+    
+    @IBOutlet weak var rightButtonRef: UIButton!
+    @IBOutlet weak var startButtonRef: UIButton!
     @IBOutlet weak var outerBoundsTop: UIView!
     
     @IBOutlet weak var outerBoundsLeft: UIView!
     
     
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var outerBoundsBottom: UIView!
     
     @IBOutlet weak var outerBoundsRight: UIView!
     
+    @IBOutlet weak var titleText: UILabel!
     
+    public var highScores: [String: Int] = [:]
+    
+    var goalPos:pair<Int, Int> = pair(first: 0, second: 0)
     var playerPos:pair<Int, Int> = pair(first: 0, second: 0)
     var playerRect:CGRect = (CGRect(x: 0, y: 0, width: 1, height: 1))
     var playerCell:UIView = UIView()
-    var playerColor:UIColor = .blue
+    public var playerColor:UIColor = .blue
     
+    var countUpTimer:Timer?
     
     var goalRect:CGRect = CGRect(x: 0, y:0, width: 1, height: 1)
     var goalCell:UIView = UIView()
-    var goalColor:UIColor = .green
+    public var goalColor:UIColor = .green
     
-    var boundsColor:UIColor = .red
+    public var boundsColor:UIColor = .red
+    
+    public var time:Float = 0.0 {
+        didSet{timeLabel.text = "Time: \(time)"}
+    }
+    
+    @objc func updateTimer(_ sender: Any) {
+        time += 0.1
+    }
+    
+    func StartGame() {
+        startGame = true
+        
+        countUpTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        
+        upButtonRef.isHidden = false
+        downButtonRef.isHidden = false
+        leftButtonRef.isHidden = false
+        rightButtonRef.isHidden = false
+        if(titleText != nil) {
+            titleText.removeFromSuperview()
+        }
+        if(startButtonRef != nil) {
+            startButtonRef.removeFromSuperview()
+        }
+        if(settingsButtonRef != nil) {
+            settingsButtonRef.removeFromSuperview()
+        }
+        let screenWidth = displayBounds.bounds.width
+        let screenHeight = displayBounds.bounds.height
+
+        eastWallHeight = Int(screenHeight)/mazeHeight
+        eastWallWidth = Int(Float(Int(screenWidth)/mazeWidth)*0.1)
+        southWallWidth = Int(screenWidth)/mazeWidth
+        southWallHeight = Int(Float(Int(screenHeight)/mazeHeight)*0.1)
+        generateMaze()
+        drawMaze()
+    }
+    func gameWon() {
+        startGame = false
+        let score:Int = Int(time)/(600)
+        
+        highScores["\(mazeWidth)x\(mazeHeight)"] = score
+        
+        countUpTimer?.invalidate()
+        let restartRect:CGRect = CGRect(x: 200, y: 110, width: 137, height: 78)
+        restartButton = UIButton(frame: restartRect)
+        restartButton?.backgroundColor = .gray
+        restartButton?.setTitle("Restart", for: .normal)
+        displayBounds.addSubview(restartButton!)
+        restartButton?.addTarget(self, action: #selector(restartGame), for: .touchUpInside)
+        self.view.bringSubviewToFront(restartButton!)
+        let quitRect:CGRect = CGRect(x: 400, y: 110, width: 137, height: 78)
+        quitButton = UIButton(frame: quitRect)
+        quitButton?.backgroundColor = .gray
+        quitButton?.setTitle("Quit", for: .normal)
+        displayBounds.addSubview(quitButton!)
+        quitButton?.addTarget(self, action: #selector(quitGame), for: .touchUpInside)
+        self.view.bringSubviewToFront(quitButton!)
+    }
+    @objc func quitGame(_ sender: Any) {
+        swipeUpRef = nil
+        swipeDownRef = nil
+        swipeLeftRef = nil
+        swipeRightRef = nil
+        outerBoundsTop.backgroundColor = .clear
+        outerBoundsLeft.backgroundColor = .clear
+        outerBoundsRight.backgroundColor = .clear
+        outerBoundsBottom.backgroundColor = .clear
+        upButtonRef.isHidden = true
+        downButtonRef.isHidden = true
+        leftButtonRef.isHidden = true
+        rightButtonRef.isHidden = true
+        self.loadView()
+        
+    }
+    @objc func restartGame(_ sender: Any) {
+        for bound in mazeBounds {
+            bound.removeFromSuperview()
+        }
+        mazeBounds.removeAll()
+        if(restartButton != nil) {
+            restartButton?.removeFromSuperview()
+        }
+        if(quitButton != nil) {
+            quitButton?.removeFromSuperview()
+        }
+        playerCell.removeFromSuperview()
+        StartGame()
+    }
+    
+    @IBAction func buttonRight(_ sender: Any) {
+        if(startGame) {
+            MoveRight()
+        }
+    }
+    
+    @IBAction func buttonLeft(_ sender: Any) {
+        if(startGame) {
+            MoveLeft()
+        }
+    }
+    
+    @IBAction func buttonDown(_ sender: Any) {
+        if(startGame) {
+            MoveDown()
+        }
+    }
+    
+    @IBAction func buttonUp(_ sender: Any) {
+        if(startGame) {
+            MoveUp()
+        }
+    }
+    
+    
+    @IBAction func startButton(_ sender: Any) {
+            StartGame()
+    }
     
     
     @IBAction func swipeRight(_ sender: Any) {
-        MoveRight()
+        if(startGame) {
+            MoveRight()
+        }
     }
     @IBAction func swipeLeft(_ sender: Any) {
+        if(startGame) {
             MoveLeft()
+        }
     }
     @IBAction func swipeDown(_ sender: Any) {
+        if(startGame) {
             MoveDown()
+        }
     }
     @IBAction func swipeUp(_ sender: Any) {
+        if(startGame) {
             MoveUp()
+        }
     }
     
     @IBOutlet weak var displayBounds: UIView!
     
     func MoveRight() {
+        print("\(playerPos.first)\t\(goalPos.first)")
         if(playerPos.first+1<mazeWidth) {
-            print("moveRight1")
             if(maze[playerPos.first][playerPos.second].dirs.contains(direction.east)) {
-                print("moveRight2")
                 playerPos.first = playerPos.first+1
                 playerCell.removeFromSuperview()
                 var xPos:Int = playerPos.first
@@ -92,20 +249,20 @@ class ViewController: UIViewController {
                 yPos = yPos*(eastWallHeight ?? 0)
                 playerRect = (CGRect(x: xPos, y: yPos, width: (southWallWidth ?? 0), height: (eastWallHeight ?? 0)))
                 playerCell = UIView(frame: playerRect)
-                playerCell.backgroundColor = .blue
+                playerCell.backgroundColor = playerColor
                 displayBounds.addSubview(playerCell)
                 displayBounds.sendSubviewToBack(playerCell)
                 displayBounds.sendSubviewToBack(goalCell)
+                if(xPos == goalPos.first) && (yPos == goalPos.second) {
+                    gameWon()
+                }
             }
         }
     }
     func MoveLeft() {
-        print(playerPos.first)
         if(playerPos.first-1>=0) {
-            print("moveLeft1")
             if(maze[playerPos.first][playerPos.second].dirs.contains(direction.west))
             {
-                print("moveLeft2")
                 playerPos.first = playerPos.first-1
                 playerCell.removeFromSuperview()
                 var xPos:Int = playerPos.first
@@ -114,19 +271,20 @@ class ViewController: UIViewController {
                 yPos = yPos*(eastWallHeight ?? 0)
                 playerRect = (CGRect(x: xPos, y: yPos, width: (southWallWidth ?? 0), height: (eastWallHeight ?? 0)))
                 playerCell = UIView(frame: playerRect)
-                playerCell.backgroundColor = .blue
+                playerCell.backgroundColor = playerColor
                 displayBounds.addSubview(playerCell)
                 displayBounds.sendSubviewToBack(playerCell)
                 displayBounds.sendSubviewToBack(goalCell)
+                if(xPos == goalPos.first) && (yPos == goalPos.second) {
+                    gameWon()
+                }
             }
         }
     }
     
     func MoveUp() {
-        if(playerPos.second-1>0) {
-            print("moveUp1")
+        if(playerPos.second-1>=0) {
             if(maze[playerPos.first][playerPos.second].dirs.contains(direction.north)) {
-                print("moveUp2")
                 playerPos.second = playerPos.second-1
                 playerCell.removeFromSuperview()
                 var xPos:Int = playerPos.first
@@ -135,10 +293,13 @@ class ViewController: UIViewController {
                 yPos = yPos*(eastWallHeight ?? 0)
                 playerRect = (CGRect(x: xPos, y: yPos, width: (southWallWidth ?? 0), height: (eastWallHeight ?? 0)))
                 playerCell = UIView(frame: playerRect)
-                playerCell.backgroundColor = .blue
+                playerCell.backgroundColor = playerColor
                 displayBounds.addSubview(playerCell)
                 displayBounds.sendSubviewToBack(playerCell)
                 displayBounds.sendSubviewToBack(goalCell)
+                if(xPos == goalPos.first) && (yPos == goalPos.second) {
+                    gameWon()
+                }
             }
         }
     }
@@ -157,18 +318,21 @@ class ViewController: UIViewController {
                 yPos = yPos*(eastWallHeight ?? 0)
                 playerRect = (CGRect(x: xPos, y: yPos, width: (southWallWidth ?? 0), height: (eastWallHeight ?? 0)))
                 playerCell = UIView(frame: playerRect)
-                playerCell.backgroundColor = .blue
+                playerCell.backgroundColor = playerColor
                 displayBounds.addSubview(playerCell)
                 displayBounds.sendSubviewToBack(playerCell)
                 displayBounds.sendSubviewToBack(goalCell)
+                if(xPos == goalPos.first) && (yPos == goalPos.second) {
+                    gameWon()
+                }
             }
         }
     }
     
     
     var mazeBounds:[UIView] = []
-    var mazeWidth:Int = 20
-    var mazeHeight:Int = 10
+    public var mazeWidth:Int = 20
+    public var mazeHeight:Int = 10
     
     var maze:[[Node]] = []
     
@@ -298,7 +462,7 @@ class ViewController: UIViewController {
                     if (!canGoEast) {
                         let bound:CGRect = CGRect(x: ((southWallWidth ?? 0)*(i+1)), y: ((eastWallHeight ?? 0)*j), width: eastWallWidth ?? 0, height: eastWallHeight ?? 0)
                         let boundView:UIView = UIView(frame: bound)
-                        boundView.backgroundColor = .red
+                        boundView.backgroundColor = boundsColor
                         mazeBounds.append(boundView)
                         displayBounds.addSubview(boundView)
                     }
@@ -316,6 +480,8 @@ class ViewController: UIViewController {
                 canGoSouth = false
             }
         }
+        playerPos.first = 0
+        playerPos.second = 0
         var xPos:Int = playerPos.first
         var yPos:Int = playerPos.second
         xPos = xPos*(southWallWidth ?? 0)
@@ -330,12 +496,15 @@ class ViewController: UIViewController {
         outerBoundsRight.backgroundColor = boundsColor
         outerBoundsBottom.backgroundColor = boundsColor
         xPos = southWallWidth ?? 0
-        xPos = xPos * mazeWidth
+        xPos = xPos * (mazeWidth-1)
         yPos = eastWallHeight ?? 0
-        yPos = yPos * mazeHeight
+        yPos = yPos * (mazeHeight-1)
+        goalPos.first = xPos
+        goalPos.second = yPos
         goalRect = CGRect(x: xPos, y: yPos, width: southWallWidth ?? 0, height: eastWallHeight ?? 0)
         goalCell = UIView(frame: goalRect)
         goalCell.backgroundColor = goalColor
+        displayBounds.addSubview(goalCell)
         displayBounds.sendSubviewToBack(goalCell)
     }
     
@@ -344,19 +513,20 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         print("ebhfuwebf")
-        let screenWidth = displayBounds.bounds.width
-        let screenHeight = displayBounds.bounds.height
 
-        eastWallHeight = Int(screenHeight)/mazeHeight
-        eastWallWidth = Int(Float(Int(screenWidth)/mazeWidth)*0.1)
-        southWallWidth = Int(screenWidth)/mazeWidth
-        southWallHeight = Int(Float(Int(screenHeight)/mazeHeight)*0.1)
-        generateMaze()
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        drawMaze()
+        outerBoundsTop.backgroundColor = .clear
+        outerBoundsLeft.backgroundColor = .clear
+        outerBoundsRight.backgroundColor = .clear
+        outerBoundsBottom.backgroundColor = .clear
+        upButtonRef.isHidden = true
+        downButtonRef.isHidden = true
+        leftButtonRef.isHidden = true
+        rightButtonRef.isHidden = true
     }
 
 }
