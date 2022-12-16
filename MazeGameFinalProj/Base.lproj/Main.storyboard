@@ -79,7 +79,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Maze Game" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YsK-aP-vKe">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Maze Game" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YsK-aP-vKe">
                                 <rect key="frame" x="302" y="23" width="248" height="91"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="34"/>
@@ -275,11 +275,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="852" height="393"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="MVy-WL-OpI">
+                                <rect key="frame" x="0.0" y="59" width="852" height="300"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="O7j-b4-pJW">
+                                        <rect key="frame" x="0.0" y="50" width="852" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O7j-b4-pJW" id="EAN-5F-s3D">
+                                            <rect key="frame" x="0.0" y="0.0" width="852" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="HighScores" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vyL-cs-A5r">
+                                <rect key="frame" x="259" y="16" width="318" height="68"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wee-9y-WNS">
-                                <rect key="frame" x="20" y="16" width="78" height="35"/>
+                                <rect key="frame" x="20" y="16" width="40" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="chevron.left" catalog="system" title="Back"/>
+                                <buttonConfiguration key="configuration" style="plain" image="chevron.left" catalog="system"/>
                                 <connections>
                                     <segue destination="zdT-S7-Rda" kind="unwind" unwindAction="unwindToPreviousWithUnwindSegue:" id="eUC-9Q-hY9"/>
                                 </connections>
@@ -287,13 +308,25 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Nna-Pg-np2"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="MVy-WL-OpI" firstAttribute="top" secondItem="Nna-Pg-np2" secondAttribute="top" id="EWP-f3-Qfq"/>
+                            <constraint firstItem="MVy-WL-OpI" firstAttribute="top" secondItem="Nna-Pg-np2" secondAttribute="top" constant="20" id="QSm-4j-E6C"/>
+                            <constraint firstItem="Nna-Pg-np2" firstAttribute="bottom" secondItem="MVy-WL-OpI" secondAttribute="bottom" id="bMC-Xb-w2t"/>
+                            <constraint firstItem="MVy-WL-OpI" firstAttribute="top" secondItem="Nna-Pg-np2" secondAttribute="top" id="e6d-aL-VLW"/>
+                            <constraint firstItem="MVy-WL-OpI" firstAttribute="leading" secondItem="Nna-Pg-np2" secondAttribute="leading" id="eN7-Jl-1fb"/>
+                            <constraint firstItem="Nna-Pg-np2" firstAttribute="trailing" secondItem="MVy-WL-OpI" secondAttribute="trailing" id="vtU-6I-aLb"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="OKO-3n-0jz"/>
+                    <connections>
+                        <outlet property="table" destination="MVy-WL-OpI" id="Joj-yN-3eP"/>
+                        <outlet property="textLabel" destination="vyL-cs-A5r" id="dKf-jq-79e"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mfr-iS-YVc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="zdT-S7-Rda" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-38" y="1744"/>
+            <point key="canvasLocation" x="-38.028169014084511" y="1742.7480916030534"/>
         </scene>
     </scenes>
     <resources>

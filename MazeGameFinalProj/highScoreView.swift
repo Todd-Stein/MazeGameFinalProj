@@ -7,23 +7,39 @@
 
 import UIKit
 
-class highScoreView : UIViewController {
+class highScoreView : UIViewController, UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cellsArray.count
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        row.textLabel?.text = cellsArray[indexPath.row]
+        return row
+    }
+    
+    @IBOutlet weak var textLabel: UILabel!
+    
+    @IBOutlet var table:UITableView!
+    var cellsArray:[String] = []
     
     public var highScores: [String: Int] = [:]
     public var prevVC:pauseMenu?
-    var table:UITableView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        highScores = prevVC!.highScores
+        for i in highScores {
+            var temp = i.key
+            temp = temp+(": ")
+            temp = temp+String(i.value)
+            cellsArray.append(temp)
+        }
+        table.delegate = self
+        table.dataSource = self
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        highScores = prevVC!.highScores
-        let tableRect:CGRect = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
-        table = UITableView(frame: tableRect, style: .plain)
-        if(highScores.count>0) {
-            table?.insertRows(at: [IndexPath(row: highScores.count-1, section: 0)], with: .automatic)
-        }
+        textLabel.text = "High Score:\nDimensions: Score"
     }
 }

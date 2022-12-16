@@ -45,6 +45,8 @@ class ViewController: UIViewController {
         pauseVC?.mainVC = self
     }
     
+    var saveData:UserDefaults = UserDefaults()
+    
     @IBAction func unwindToPrevious(unwindSegue: UIStoryboardSegue) {
         
     }
@@ -96,7 +98,7 @@ class ViewController: UIViewController {
     public var boundsColor:UIColor = .red
     
     public var time:Float = 0.0 {
-        didSet{timeLabel.text = "Time: \(time)"}
+        didSet{timeLabel.text = "Time: \(floor(time*10)/10)"}
     }
     
     @objc func updateTimer(_ sender: Any) {
@@ -105,15 +107,16 @@ class ViewController: UIViewController {
     
     func StartGame() {
         startGame = true
-        
+        time = 0
         countUpTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
         
         upButtonRef.isHidden = false
         downButtonRef.isHidden = false
         leftButtonRef.isHidden = false
         rightButtonRef.isHidden = false
+        timeLabel.isHidden = false
         if(titleText != nil) {
-            titleText.removeFromSuperview()
+            titleText.text = ""
         }
         if(startButtonRef != nil) {
             startButtonRef.removeFromSuperview()
@@ -133,11 +136,12 @@ class ViewController: UIViewController {
     }
     func gameWon() {
         startGame = false
-        let score:Int = Int(time)/(600)
-        
+        let score:Int = ((600)/Int(time))*100
+        countUpTimer?.invalidate()
         highScores["\(mazeWidth)x\(mazeHeight)"] = score
         
-        countUpTimer?.invalidate()
+        titleText.text = "You Win!!!\nScore: \(score)"
+        saveData.setValue(highScores, forKey: "highScores")
         let restartRect:CGRect = CGRect(x: 200, y: 110, width: 137, height: 78)
         restartButton = UIButton(frame: restartRect)
         restartButton?.backgroundColor = .gray
@@ -158,6 +162,7 @@ class ViewController: UIViewController {
         swipeDownRef = nil
         swipeLeftRef = nil
         swipeRightRef = nil
+        self.loadView()
         outerBoundsTop.backgroundColor = .clear
         outerBoundsLeft.backgroundColor = .clear
         outerBoundsRight.backgroundColor = .clear
@@ -165,9 +170,8 @@ class ViewController: UIViewController {
         upButtonRef.isHidden = true
         downButtonRef.isHidden = true
         leftButtonRef.isHidden = true
+        timeLabel.isHidden = true
         rightButtonRef.isHidden = true
-        self.loadView()
-        
     }
     @objc func restartGame(_ sender: Any) {
         for bound in mazeBounds {
@@ -238,7 +242,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var displayBounds: UIView!
     
     func MoveRight() {
-        print("\(playerPos.first)\t\(goalPos.first)")
         if(playerPos.first+1<mazeWidth) {
             if(maze[playerPos.first][playerPos.second].dirs.contains(direction.east)) {
                 playerPos.first = playerPos.first+1
@@ -307,9 +310,7 @@ class ViewController: UIViewController {
     
     func MoveDown() {
         if(playerPos.second+1<mazeHeight) {
-            print("moveDown1")
             if(maze[playerPos.first][playerPos.second].dirs.contains(direction.south)) {
-                print("moveDown2")
                 playerPos.second = playerPos.second+1
                 playerCell.removeFromSuperview()
                 var xPos:Int = playerPos.first
@@ -511,9 +512,24 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-        print("ebhfuwebf")
-
+        if let savedScores = saveData.value(forKey: "highScores") as? [String: Int] {
+            highScores = savedScores
+        }
+        if let savedWidth = saveData.value(forKey: "mazeWidth") as? Int {
+            mazeWidth = savedWidth
+        }
+        if let savedHeight = saveData.value(forKey: "mazeHeight") as? Int {
+            mazeHeight = savedHeight
+        }
+        if let savedBorderColor = saveData.value(forKey: "borderColor") as? [CGFloat] {
+            boundsColor = UIColor(red: savedBorderColor[0], green: savedBorderColor[1], blue: savedBorderColor[2], alpha: 1.0)
+        }
+        if let savedPlayerColor = saveData.value(forKey: "playerColor") as? [CGFloat] {
+            playerColor = UIColor(red: savedPlayerColor[0], green: savedPlayerColor[1], blue: savedPlayerColor[2], alpha: 1.0)
+        }
+        if let savedGoalColor = saveData.value(forKey: "goalColor") as? [CGFloat] {
+            goalColor = UIColor(red: savedGoalColor[0], green: savedGoalColor[1], blue: savedGoalColor[2], alpha: 1.0)
+        }
         
     }
 
@@ -527,6 +543,7 @@ class ViewController: UIViewController {
         downButtonRef.isHidden = true
         leftButtonRef.isHidden = true
         rightButtonRef.isHidden = true
+        timeLabel.isHidden = true
     }
 
 }
